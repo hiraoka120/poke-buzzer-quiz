@@ -1,5 +1,14 @@
-function HomePage() {
-  return <div>Welcome to Next.js!</div>
-}
+import { NextPage } from 'next';
+import NextHead from 'next/head';
 
-export default HomePage
+const Index: NextPage = () => (
+  <>
+    <NextHead>
+      <title>index page</title>
+      <meta name="description" content="index page" />
+    </NextHead>
+    index page!!!
+  </>
+ );
+
+export default Index;
