@@ -1,6 +1,5 @@
-import { useEffect, useState, ChangeEvent, useCallback, SetStateAction, Dispatch } from 'react';
+import { useState, useCallback } from 'react';
 import { fetchPokemon } from '../api/fetchPokemon'
-import { setCorrectAnswer } from '../stores'
 
 type Return = {
   question: {

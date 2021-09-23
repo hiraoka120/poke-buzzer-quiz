@@ -2,12 +2,12 @@ import { createSlice, PayloadAction, configureStore } from '@reduxjs/toolkit';
 
 export type Game = {
   playing: boolean,
-  correctAnswers: string[]
+  correctAnswers: string[],
 }
 
 const initialState = {
   playing: false,
-  correctAnswers: []
+  correctAnswers: [],
 } as Game;
 
 const gameSlice = createSlice({
@@ -22,10 +22,14 @@ const gameSlice = createSlice({
       ...state,
       correctAnswers: [...state.correctAnswers, action.payload]
     }),
+    resetCorrectAnswer: (state: Game) => ({
+      ...state,
+      correctAnswers: []
+    }),
   }
 });
 
-export const { setGame, setCorrectAnswer } = gameSlice.actions;
+export const { setGame, setCorrectAnswer, resetCorrectAnswer } = gameSlice.actions;
 
 const store = configureStore({ reducer: gameSlice.reducer });
 
