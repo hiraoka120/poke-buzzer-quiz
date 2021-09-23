@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
     "fs": "^0.0.1-security",
     "next": "^11.0.1",
     "path": "^0.12.7",
@@ -30,6 +31,9 @@
     "@types/react-modal": "^3.12.0",
     "@types/react-redux": "^7.1.18",
     "@types/redux": "^3.6.0",
+    "@vanilla-extract/babel-plugin": "^1.1.0",
+    "@vanilla-extract/css": "^1.5.0",
+    "@vanilla-extract/next-plugin": "^1.0.0",
     "babel-loader": "^8.2.2",
     "jest": "^26.6.3",
     "ts-jest": "^26.5.0",
