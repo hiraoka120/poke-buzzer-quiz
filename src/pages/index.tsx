@@ -3,13 +3,15 @@ import NextHead from 'next/head';
 import { Button } from '../components/Button';
 import { AnswerText } from '../components/AnswerText';
 import { useSelector, useDispatch } from 'react-redux';
-import { Game, setGame, resetCorrectAnswer } from '../stores';
+import { Game, setGame, setCorrectAnswer, resetCorrectAnswer } from '../stores';
 import { useAnswer } from '../hooks/useAnswer';
+import { useQuestion } from '../hooks/useQuestion'
 
 const Index: NextPage = () => {
   const state = useSelector((state: Game) => state);
   const dispatch = useDispatch();
-  const { question, handleQuestion, handleAnswer, checkAnswer, answer, respondent, handleChange, winner } = useAnswer();
+  const { handleAnswer, checkAnswer, answer, respondent, handleChange, winner } = useAnswer();
+  const { question, handleQuestion } = useQuestion();
 
   return (
     <>
@@ -59,7 +61,13 @@ const Index: NextPage = () => {
                 handleChange={handleChange}
               />
               <Button
-                onClick={() => checkAnswer(question.name, answer)}
+                onClick={() => {
+                  if (question.name === answer) {
+                    dispatch(setCorrectAnswer(respondent))
+                  }
+                  checkAnswer();
+                  handleQuestion();
+                }}
               >
                 答える
               </Button>

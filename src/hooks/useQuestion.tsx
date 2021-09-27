@@ -18,8 +18,8 @@ export const useQuestion = (): Return => {
   }, [question]);
 
   const setImageUrl = (imageID: number):string => {
-    // TODO: ドメインをconfに変更
-    return `http://localhost:3000/images/${imageID.toString().padStart(3, '0')}.png`;
+    // TODO: API側でもたせる
+    return `${process.env.NEXT_PUBLIC_APP_HOST}/images/${imageID.toString().padStart(3, '0')}.png`;
   };
 
   return {
