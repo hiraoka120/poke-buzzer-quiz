@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import { useEffect } from 'react'
 import NextHead from 'next/head';
 import { Button } from '../components/Button';
 import { AnswerText } from '../components/AnswerText';
@@ -12,6 +13,22 @@ const Index: NextPage = () => {
   const dispatch = useDispatch();
   const { handleAnswer, checkAnswer, answer, respondent, handleChange, winner } = useAnswer();
   const { question, handleQuestion } = useQuestion();
+
+  const keyBind = (e: globalThis.KeyboardEvent): void => {
+    if (e.key === '1') {
+      handleAnswer('A');
+    }
+    if (e.key === '0') {
+      handleAnswer('B');
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', (e)=>{keyBind(e)});
+    return () => {
+      document.removeEventListener('keydown', (e)=>{keyBind(e)});
+    }
+  }, []);
 
   return (
     <>
@@ -38,22 +55,6 @@ const Index: NextPage = () => {
       }
       {!winner &&
         <>
-          <div>
-            Aさん
-            <Button
-              onClick={() => handleAnswer('A')}
-            >
-              はい！
-            </Button>
-          </div>
-          <div>
-            Bさん
-            <Button
-              onClick={() => handleAnswer('B')}
-            >
-              はい!
-            </Button>
-          </div>
           {respondent &&
             <>
               <AnswerText
