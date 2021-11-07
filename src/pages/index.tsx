@@ -2,7 +2,10 @@ import { NextPage } from 'next';
 import { useEffect } from 'react'
 import NextHead from 'next/head';
 import { Button } from '../components/Button';
+import { Layout } from '../components/Layout';
 import { AnswerText } from '../components/AnswerText';
+import { PokemonImage } from '../components/PokemonImage';
+import { Winner } from '../components/Winner';
 import { useGame } from '../hooks/useGame';
 import { useQuestion } from '../hooks/useQuestion'
 
@@ -43,64 +46,60 @@ const Index: NextPage = () => {
         <title>index page</title>
         <meta name="description" content="index page" />
       </NextHead>
-      {!winner &&
-      <>
-        問題:
-        <p style={{color: 'white'}}>{question.name}</p>
-        <img src={question.imageUrl} alt={question.name}/>
-      </>
-      }
-      {!playing &&
-        <Button
-          onClick={() => {
-            handlePlaying(true);
-            handleQuestion();
-          }}
-        >
-          Start!
-        </Button>
-      }
-      {!winner &&
-        <>
-          {respondent &&
-            <>
-              <AnswerText
-                answer={answer}
-                handleChange={handleChange}
-              />
-              <Button
-                onClick={() => {
-                  if (question.name === answer) {
-                    handleCorrectAnswer(respondent);
-                  }
-                  checkAnswer();
-                  handleQuestion();
-                }}
-              >
-                答える
-              </Button>
-            </>
-          }
-          <Button
-            onClick={() => handleQuestion()}
-          >
-            パスする
-          </Button>
-        </>
-      }
-      {winner &&
-        <>
-          <div>{winner}の勝ち！</div>
+      <Layout>
+        <PokemonImage isShow={!winner} question={question} />
+        {!playing &&
           <Button
             onClick={() => {
-              resetGame();
+              handlePlaying(true);
               handleQuestion();
             }}
           >
-          もう一度やる
+            Start!
           </Button>
-        </>
-  }
+        }
+        {!winner &&
+          <>
+            {respondent &&
+              <>
+                <AnswerText
+                  answer={answer}
+                  handleChange={handleChange}
+                />
+                <Button
+                  onClick={() => {
+                    if (question.name === answer) {
+                      handleCorrectAnswer(respondent);
+                    }
+                    checkAnswer();
+                    handleQuestion();
+                  }}
+                >
+                  こたえる
+                </Button>
+              </>
+            }
+            <Button
+              onClick={() => handleQuestion()}
+            >
+              パスする
+            </Button>
+          </>
+        }
+        {winner &&
+          <>
+            <Winner winner={winner} />
+            <Button
+              onClick={() => {
+                resetGame();
+                handleQuestion();
+              }}
+            >
+            もう一度やる
+            </Button>
+          </>
+        }
+      </Layout>
     </>
   );
 };

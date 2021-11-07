@@ -75,6 +75,6 @@ globalStyle('body', {
   color: '#313131',
   fontSize: '14px',
   lineHeight: 1.5,
-  maxWidth: 100
+  maxWidth: '100%'
 });
 
