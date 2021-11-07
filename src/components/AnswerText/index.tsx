@@ -1,6 +1,5 @@
 import { ChangeEvent } from 'react';
 import { Style } from './styles.css'
-import { useAnswer } from '../../hooks/useAnswer'
 
 export type Props = {
   answer: string,

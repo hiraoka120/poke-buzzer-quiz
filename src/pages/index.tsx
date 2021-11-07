@@ -3,15 +3,22 @@ import { useEffect } from 'react'
 import NextHead from 'next/head';
 import { Button } from '../components/Button';
 import { AnswerText } from '../components/AnswerText';
-import { useSelector, useDispatch } from 'react-redux';
-import { Game, setGame, setCorrectAnswer, resetCorrectAnswer } from '../stores';
-import { useAnswer } from '../hooks/useAnswer';
+import { useGame } from '../hooks/useGame';
 import { useQuestion } from '../hooks/useQuestion'
 
 const Index: NextPage = () => {
-  const state = useSelector((state: Game) => state);
-  const dispatch = useDispatch();
-  const { handleAnswer, checkAnswer, answer, respondent, handleChange, winner } = useAnswer();
+  const {
+    handleAnswer,
+    checkAnswer,
+    answer,
+    respondent,
+    handleChange,
+    winner,
+    playing,
+    handlePlaying,
+    handleCorrectAnswer,
+    resetGame,
+  } = useGame();
   const { question, handleQuestion } = useQuestion();
 
   const keyBind = (e: globalThis.KeyboardEvent): void => {
@@ -43,10 +50,10 @@ const Index: NextPage = () => {
         <img src={question.imageUrl} alt={question.name}/>
       </>
       }
-      {!state.playing &&
+      {!playing &&
         <Button
           onClick={() => {
-            dispatch(setGame(true));
+            handlePlaying(true);
             handleQuestion();
           }}
         >
@@ -64,7 +71,7 @@ const Index: NextPage = () => {
               <Button
                 onClick={() => {
                   if (question.name === answer) {
-                    dispatch(setCorrectAnswer(respondent))
+                    handleCorrectAnswer(respondent);
                   }
                   checkAnswer();
                   handleQuestion();
@@ -86,7 +93,7 @@ const Index: NextPage = () => {
           <div>{winner}の勝ち！</div>
           <Button
             onClick={() => {
-              dispatch(resetCorrectAnswer());
+              resetGame();
               handleQuestion();
             }}
           >
