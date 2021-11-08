@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import NextHead from 'next/head';
 import { Button } from '../components/Button';
 import { Layout } from '../components/Layout';
@@ -24,14 +24,18 @@ const Index: NextPage = () => {
   } = useGame();
   const { question, handleQuestion } = useQuestion();
 
-  const keyBind = (e: globalThis.KeyboardEvent): void => {
-    if (e.key === '1') {
-      handleAnswer('A');
-    }
-    if (e.key === '0') {
-      handleAnswer('B');
-    }
-  };
+  const keyBind = useCallback(
+    (e: globalThis.KeyboardEvent): void => {
+      if (e.key === '1') {
+        e.preventDefault();
+        handleAnswer('A');
+      }
+      if (e.key === '0') {
+        e.preventDefault();
+        handleAnswer('B');
+      }
+    }, []
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', (e)=>{keyBind(e)});
@@ -58,7 +62,7 @@ const Index: NextPage = () => {
             Start!
           </Button>
         }
-        {!winner &&
+        {playing　&& !winner &&
           <>
             {respondent &&
               <>
@@ -80,7 +84,12 @@ const Index: NextPage = () => {
               </>
             }
             <Button
-              onClick={() => handleQuestion()}
+              onClick={() => {
+                handleQuestion();
+                // TODO: パス用メソッド作る
+                checkAnswer(); 
+              }
+            }
             >
               パスする
             </Button>
