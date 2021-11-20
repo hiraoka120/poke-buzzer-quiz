@@ -5,5 +5,5 @@ export const Style = style({
   margin: '0 auto',
   textAlign: 'center',
   height: '100vh',
-  paddingTop: '60px'
+  paddingTop: '30px'
 });

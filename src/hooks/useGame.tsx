@@ -46,7 +46,7 @@ export const useGame = (): Return => {
   };
 
   const handleWinner = (respondent: string): void => {
-    if (standings.filter(answer => answer === respondent).length > 0) {
+    if (standings.filter(answer => answer === respondent).length >= 2) {
       setWinner(respondent);
     }
   }

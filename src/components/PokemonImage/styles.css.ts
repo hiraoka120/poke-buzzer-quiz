@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const ImageWrapperStyle = style({
-  margin: '0 auto 30px',
+  margin: '0 auto 10px',
   display: 'flex',
   justifyContent: 'center',
   padding: '40px',

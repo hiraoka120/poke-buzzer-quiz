@@ -6,6 +6,7 @@ import { Layout } from '../components/Layout';
 import { AnswerText } from '../components/AnswerText';
 import { PokemonImage } from '../components/PokemonImage';
 import { Winner } from '../components/Winner';
+import { Points } from '../components/Points';
 import { useGame } from '../hooks/useGame';
 import { useQuestion } from '../hooks/useQuestion'
 
@@ -15,6 +16,7 @@ const Index: NextPage = () => {
     checkAnswer,
     answer,
     respondent,
+    standings,
     handleChange,
     winner,
     playing,
@@ -34,8 +36,19 @@ const Index: NextPage = () => {
         e.preventDefault();
         handleAnswer('B');
       }
-    }, []
+    }, [respondent]
   );
+  // const keyBind = (e: globalThis.KeyboardEvent): void => {
+  //   console.log(respondent);
+  //   if (e.key === '1') {
+  //     e.preventDefault();
+  //     handleAnswer('A');
+  //   }
+  //   if (e.key === '0') {
+  //     e.preventDefault();
+  //     handleAnswer('B');
+  //   }
+  // };
 
   useEffect(() => {
     document.addEventListener('keydown', (e)=>{keyBind(e)});
@@ -64,6 +77,7 @@ const Index: NextPage = () => {
         }
         {playing　&& !winner &&
           <>
+            <Points standings={standings} />
             {respondent &&
               <>
                 <AnswerText
