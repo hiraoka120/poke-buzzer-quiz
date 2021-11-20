@@ -1,27 +1,54 @@
 import { NextPage } from 'next';
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import NextHead from 'next/head';
 import { Button } from '../components/Button';
+import { Layout } from '../components/Layout';
 import { AnswerText } from '../components/AnswerText';
-import { useSelector, useDispatch } from 'react-redux';
-import { Game, setGame, setCorrectAnswer, resetCorrectAnswer } from '../stores';
-import { useAnswer } from '../hooks/useAnswer';
+import { PokemonImage } from '../components/PokemonImage';
+import { Winner } from '../components/Winner';
+import { Points } from '../components/Points';
+import { useGame } from '../hooks/useGame';
 import { useQuestion } from '../hooks/useQuestion'
 
 const Index: NextPage = () => {
-  const state = useSelector((state: Game) => state);
-  const dispatch = useDispatch();
-  const { handleAnswer, checkAnswer, answer, respondent, handleChange, winner } = useAnswer();
+  const {
+    handleAnswer,
+    checkAnswer,
+    answer,
+    respondent,
+    standings,
+    handleChange,
+    winner,
+    playing,
+    handlePlaying,
+    handleCorrectAnswer,
+    resetGame,
+  } = useGame();
   const { question, handleQuestion } = useQuestion();
 
-  const keyBind = (e: globalThis.KeyboardEvent): void => {
-    if (e.key === '1') {
-      handleAnswer('A');
-    }
-    if (e.key === '0') {
-      handleAnswer('B');
-    }
-  };
+  const keyBind = useCallback(
+    (e: globalThis.KeyboardEvent): void => {
+      if (e.key === '1') {
+        e.preventDefault();
+        handleAnswer('A');
+      }
+      if (e.key === '0') {
+        e.preventDefault();
+        handleAnswer('B');
+      }
+    }, [respondent]
+  );
+  // const keyBind = (e: globalThis.KeyboardEvent): void => {
+  //   console.log(respondent);
+  //   if (e.key === '1') {
+  //     e.preventDefault();
+  //     handleAnswer('A');
+  //   }
+  //   if (e.key === '0') {
+  //     e.preventDefault();
+  //     handleAnswer('B');
+  //   }
+  // };
 
   useEffect(() => {
     document.addEventListener('keydown', (e)=>{keyBind(e)});
@@ -36,64 +63,66 @@ const Index: NextPage = () => {
         <title>index page</title>
         <meta name="description" content="index page" />
       </NextHead>
-      {!winner &&
-      <>
-        問題:
-        <p style={{color: 'white'}}>{question.name}</p>
-        <img src={question.imageUrl} alt={question.name}/>
-      </>
-      }
-      {!state.playing &&
-        <Button
-          onClick={() => {
-            dispatch(setGame(true));
-            handleQuestion();
-          }}
-        >
-          Start!
-        </Button>
-      }
-      {!winner &&
-        <>
-          {respondent &&
-            <>
-              <AnswerText
-                answer={answer}
-                handleChange={handleChange}
-              />
-              <Button
-                onClick={() => {
-                  if (question.name === answer) {
-                    dispatch(setCorrectAnswer(respondent))
-                  }
-                  checkAnswer();
-                  handleQuestion();
-                }}
-              >
-                答える
-              </Button>
-            </>
-          }
-          <Button
-            onClick={() => handleQuestion()}
-          >
-            パスする
-          </Button>
-        </>
-      }
-      {winner &&
-        <>
-          <div>{winner}の勝ち！</div>
+      <Layout>
+        <PokemonImage isShow={!winner} question={question} />
+        {!playing &&
           <Button
             onClick={() => {
-              dispatch(resetCorrectAnswer());
+              handlePlaying(true);
               handleQuestion();
             }}
           >
-          もう一度やる
+            Start!
           </Button>
-        </>
-  }
+        }
+        {playing　&& !winner &&
+          <>
+            <Points standings={standings} />
+            {respondent &&
+              <>
+                <AnswerText
+                  answer={answer}
+                  handleChange={handleChange}
+                />
+                <Button
+                  onClick={() => {
+                    if (question.name === answer) {
+                      handleCorrectAnswer(respondent);
+                    }
+                    checkAnswer();
+                    handleQuestion();
+                  }}
+                >
+                  こたえる
+                </Button>
+              </>
+            }
+            <Button
+              onClick={() => {
+                handleQuestion();
+                // TODO: パス用メソッド作る
+                checkAnswer(); 
+              }
+            }
+            >
+              パスする
+            </Button>
+          </>
+        }
+        {winner &&
+          <>
+            <Winner winner={winner} />
+            <Button
+              onClick={() => {
+                resetGame();
+                handleQuestion();
+              }}
+            >
+            もう一度やる
+            </Button>
+          </>
+        }
+      </Layout>
     </>
   );
 };

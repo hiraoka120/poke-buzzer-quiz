@@ -1,5 +1,5 @@
 import { MouseEvent, ReactNode } from 'react';
-import { Style } from './styles.css'
+import { ButtonWrapperStyle, ButtonStyle } from './styles.css'
 
 export type Props = {
   children: ReactNode;
@@ -9,7 +9,8 @@ export type Props = {
 export const Button = ( props: Props ): JSX.Element => {
   const { children, onClick } = props;
   return (
-    <button onClick={onClick} className={Style}>{children}</button>
+    <div className={ButtonWrapperStyle}>
+      <button onClick={onClick} className={ButtonStyle}>{children}</button>
+    </div>
   );
-  
 };

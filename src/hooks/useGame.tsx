@@ -1,19 +1,23 @@
 import { useEffect, useState, ChangeEvent, useCallback, SetStateAction, Dispatch } from 'react';
-import { useSelector } from 'react-redux';
-import { Game } from '../stores'
 
 type Return = {
+  playing: boolean,
+  standings: string[];
   answering: boolean;
   respondent: string;
   answer: string;
   winner: string,
+  handlePlaying: (playing: boolean) => void;
   handleAnswer: (respondent: string) => void;
+  handleCorrectAnswer: (respondent: string) => void;
   checkAnswer: () => void;
+  resetGame: () => void;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const useAnswer = (): Return => {
-  const state = useSelector((state: Game) => state);
+export const useGame = (): Return => {
+  const [playing, setPlaying] = useState(false);
+  const [standings, setStandings] = useState<string[]>([]);
   const [answering, setAnswering] = useState(false);
   const [respondent, setRespondent] = useState('');
   const [answer, setAnswer] = useState('');
@@ -27,6 +31,14 @@ export const useAnswer = (): Return => {
     setRespondent(respondent);
   };
 
+  const handleCorrectAnswer = (respondent: string) => {
+    setStandings([...standings, respondent]);
+  };
+
+  const handlePlaying = (playing: boolean) => {
+    setPlaying(playing);
+  }
+
   const checkAnswer = () => {
     handleWinner(respondent);
     setAnswer('');
@@ -34,7 +46,7 @@ export const useAnswer = (): Return => {
   };
 
   const handleWinner = (respondent: string): void => {
-    if (state.correctAnswers.filter(answer => answer === respondent).length > 0) {
+    if (standings.filter(answer => answer === respondent).length >= 2) {
       setWinner(respondent);
     }
   }
@@ -46,13 +58,25 @@ export const useAnswer = (): Return => {
     [setAnswer]
   );
 
+  const resetGame = () => {
+    setStandings([]);
+    setAnswer('');
+    setRespondent('');
+    setWinner('');
+  };
+
   return {
+    playing,
+    standings,
     answering,
     respondent,
     answer,
     winner,
+    handlePlaying,
     handleAnswer,
+    handleCorrectAnswer,
     checkAnswer,
+    resetGame,
     handleChange
   }
 };
