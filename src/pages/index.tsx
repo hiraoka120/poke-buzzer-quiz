@@ -38,17 +38,6 @@ const Index: NextPage = () => {
       }
     }, [respondent]
   );
-  // const keyBind = (e: globalThis.KeyboardEvent): void => {
-  //   console.log(respondent);
-  //   if (e.key === '1') {
-  //     e.preventDefault();
-  //     handleAnswer('A');
-  //   }
-  //   if (e.key === '0') {
-  //     e.preventDefault();
-  //     handleAnswer('B');
-  //   }
-  // };
 
   useEffect(() => {
     document.addEventListener('keydown', (e)=>{keyBind(e)});
