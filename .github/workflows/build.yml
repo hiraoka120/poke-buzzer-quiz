@@ -25,9 +25,13 @@ jobs:
           fi
           echo "::set-output name=release_tag::$today-$(($pre_release_count + 1))"
 
+      - name: Output pr title
+        run: |
+          echo ${{ github.event.pull_request.title }}
+
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: ${{ steps.release_tag.outputs.release_tag }}
           prerelease: false
-          title: "test01"
+          title: "test02"
