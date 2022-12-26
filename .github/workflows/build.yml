@@ -1,9 +1,7 @@
 name: Create release tag and release note.
-
 on:
   push:
     branches: [ main ]
-
 jobs:
   create-release-tag:
     runs-on: ubuntu-latest
