@@ -4,7 +4,6 @@ on:
     types: [synchronize]
     branches:
       - main
-
 jobs:
   create-release-tag:
     runs-on: ubuntu-latest
