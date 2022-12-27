@@ -32,9 +32,10 @@ jobs:
         run: |
           echo "${{ github.event.pull_request.title }}"
 
-      - uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ steps.release_tag.outputs.release_tag }}
-          prerelease: false
-          title: ${{ steps.output.outputs.output }}
+      # タグを切り、リリースノートを作成する
+      - name: Create Release
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -d "{ \"tag_name\": \"${{ steps.release_tag.outputs.release_tag }}\", \"name\": \"${{ github.event.pull_request.title }}\", \"body\": \"${{ github.event.pull_request.title }}\"}" \
+            https://api.github.com/repos/${{ github.repository }}/releases
