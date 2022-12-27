@@ -8,6 +8,11 @@ on:
   push:
     branches:
       - '**'
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
 jobs:
   create-release-tag:
     runs-on: ubuntu-latest
