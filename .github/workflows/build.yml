@@ -10,7 +10,7 @@ jobs:
     steps:
       # 前回のりリースタグを取得するぞ
       - name: Get previous tag
-        id: pre_tag
+        id: previous_tag
         run: >
           echo "previous_tag=$(curl -H 'Accept: application/vnd.github.v3+json' -H
           'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
@@ -21,8 +21,8 @@ jobs:
         id: release_tag
         run: |
           today=$(date +'%Y.%m.%d')
-          pre_release_date=$(echo ${{ steps.pre_tag.outputs.pre_tag }} | awk -F'-' '{print $1}')
-          pre_release_count=$(echo ${{ steps.pre_tag.outputs.pre_tag }} | awk -F'-' '{print $2}')
+          pre_release_date=$(echo ${{ steps.previous_tag.outputs.previous_tag }} | awk -F'-' '{print $1}')
+          pre_release_count=$(echo ${{ steps.previous_tag.outputs.previous_tag }} | awk -F'-' '{print $2}')
           if [[ ! $pre_release_date = $today ]]; then
             echo "init count"
             pre_release_count=0
