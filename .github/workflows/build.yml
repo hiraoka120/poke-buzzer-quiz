@@ -8,7 +8,6 @@ jobs:
   create-release-tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       # 前回のりリースタグを取得するぞ
       - name: Get previous tag
         id: pre_tag
@@ -29,7 +28,7 @@ jobs:
             pre_release_count=0
           fi
           echo "release_tag=$today-$(($pre_release_count + 1))" >> $GITHUB_OUTPUT
-
+      - uses: actions/checkout@v3
       - name: Create Release
         uses: elgohr/Github-Release-Action@v4
         env:
