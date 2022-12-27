@@ -12,9 +12,9 @@ jobs:
       - name: Get previous tag
         id: pre_tag
         run: |
-          echo "::set-output name=pre_tag::$(curl -H 'Accept: application/vnd.github.v3+json' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r .tag_name)"
+          echo "pre_tag=$(curl -H 'Accept: application/vnd.github.v3+json' -H 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r .tag_name)" >> $GITHUB_OUTPUT
 
-      # タグを生成する 「{YYYY.MM.DD}-{当日リリース回数}」ぞ
+      # タグを生成する 「{YYYY.MM.DD}-{当日リリース回数}」
       - name: Generate release tag
         id: release_tag
         run: |
@@ -25,20 +25,7 @@ jobs:
             echo "init count"
             pre_release_count=0
           fi
-          echo "::set-output name=release_tag::$today-$(($pre_release_count + 1))"
-
-#       - name: Output pr title
-#         id: output
-#         run: |
-#           echo "${{ github.event.pull_request.title }}"
-
-#       # タグを切り、リリースノートを作成する
-#       - name: Create Release
-#         run: |
-#           curl -X POST \
-#             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-#             -d "{ \"tag_name\": \"${{ steps.release_tag.outputs.release_tag }}\", \"name\": \"${{ github.event.pull_request.title }}\", \"body\": \"${{ github.event.pull_request.title }}\"}" \
-#             https://api.github.com/repos/${{ github.repository }}/releases
+          echo "release_tag=$today-$(($pre_release_count + 1))" >> $GITHUB_OUTPUT
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
