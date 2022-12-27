@@ -28,7 +28,7 @@ jobs:
       - name: Output pr title
         id: output
         run: |
-          echo "::set-output name=output::$today-${{ github.event.pull_request.title }}"
+          echo "${{ github.event.pull_request.title }}"
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
