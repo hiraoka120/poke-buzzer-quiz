@@ -29,7 +29,7 @@ jobs:
           fi
           echo "release_tag=$today-$(($pre_release_count + 1))" >> $GITHUB_OUTPUT
       - name: Create Release
-        run: >
+        run: |
           curl -X POST
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
             -d "{
