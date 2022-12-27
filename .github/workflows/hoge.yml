@@ -5,8 +5,9 @@ on:
       - '**'
 jobs:
   test:
-    name: 'yamllint'
+    name: 'echo'
     runs-on: ubuntu-latest
     steps:
-    run: |
-      ehho "hoge"
+      - name: 'echo'
+        run: |
+          ehho "hoge"
