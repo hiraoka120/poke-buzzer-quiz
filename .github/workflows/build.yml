@@ -30,8 +30,8 @@ jobs:
           echo "release_tag=$today-$(($pre_release_count + 1))" >> $GITHUB_OUTPUT
       - name: Create Release
         run: |
-          tag=${{ steps.release_tag.outputs.release_tag }}
-          title=${{ github.event.pull_request.title }}
+          tag=$(echo ${{ steps.release_tag.outputs.release_tag }})
+          title=$(echo ${{ github.event.pull_request.title }})
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           -d "{ \"tag_name\": \"$tag\", \"name\": \"$(($title))\"　}" \
