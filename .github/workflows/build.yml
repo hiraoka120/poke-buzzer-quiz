@@ -34,5 +34,5 @@ jobs:
           title=${{ github.event.pull_request.title }}
           curl -X POST \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -d "{ \"tag_name\": \"$(($tag))\", \"name\": \"$(($title))\"　}" \
+          -d "{ \"tag_name\": \"$tag\", \"name\": \"$(($title))\"　}" \
           https://api.github.com/repos/${{ github.repository }}/releases
