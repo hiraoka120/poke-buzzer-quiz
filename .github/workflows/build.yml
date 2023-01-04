@@ -11,7 +11,8 @@ jobs:
     steps:
       - name: 'echo'
         run: |
-          echo 'hoge'
+          today=$(date +'%Y.%m.%d')
+          echo $today
   create-release-tag:
     runs-on: ubuntu-latest
     needs: deploy
