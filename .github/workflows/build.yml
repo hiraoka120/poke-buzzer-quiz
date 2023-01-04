@@ -4,11 +4,11 @@ on:
     branches:
       - '**'
 jobs:
-  main:
-    name: main
-    runs-on: ubuntu-20.04
+  deploy:
+    name: 'deploy'
+    if: ${{ endWith(github.ref, 'main') }}
+    runs-on: ubuntu-last
     steps:
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            core.info(JSON.stringify(context.payload))
+      - name: 'echo'
+        run: |
+          echo 'hoge'
