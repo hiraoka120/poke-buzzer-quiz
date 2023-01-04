@@ -1,9 +1,8 @@
 name: Create release tag and release note.
 on:
-  pull_request:
-    types: [closed]
-    branches:
-      - main
+  workflow_run:
+    workflows: [test]
+    types: [completed]
 jobs:
   create-release-tag:
     runs-on: ubuntu-latest
