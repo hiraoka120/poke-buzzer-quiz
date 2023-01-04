@@ -1,36 +1,14 @@
 name: Create release tag and release note.
 on:
-  workflow_run:
-    workflows: [test]
-    types: [completed]
+  push:
+    branches:
+      - '**'
 jobs:
-  create-release-tag:
-    runs-on: ubuntu-latest
+  main:
+    name: main
+    runs-on: ubuntu-20.04
     steps:
-      # 前回のリリースタグを取得する
-      - name: 'Get previous tag'
-        id: previous_tag
-        run: >
-          echo "previous_tag=$(curl -H 'Accept: application/vnd.github.v3+json' -H
-          'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
-          https://api.github.com/repos/${{ github.repository }}/releases/latest
-          | jq -r .tag_name)" >> $GITHUB_OUTPUT
-      # タグを生成する 「{YYYY.MM.DD}-{当日リリース回数}」
-      - name: 'Generate release tag'
-        id: release_tag
-        run: |
-          today=$(date +'%Y.%m.%d')
-          pre_release_date=$(echo ${{ steps.previous_tag.outputs.previous_tag }} | awk -F'-' '{print $1}')
-          pre_release_count=$(echo ${{ steps.previous_tag.outputs.previous_tag }} | awk -F'-' '{print $2}')
-          if [[ ! $pre_release_date = $today ]]; then
-            echo "init count"
-            pre_release_count=0
-          fi
-          echo "release_tag=$today-$(($pre_release_count + 1))" >> $GITHUB_OUTPUT
-      - name: 'Create Release'
-        run: >
-          curl -X POST
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
-          -d "{ \"tag_name\": \"${{ steps.release_tag.outputs.release_tag }}\",
-          \"name\": \"${{ github.event.workflow_run.display_title }}\"}"
-          https://api.github.com/repos/${{ github.repository }}/releases
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            core.info(JSON.stringify(context.payload))
