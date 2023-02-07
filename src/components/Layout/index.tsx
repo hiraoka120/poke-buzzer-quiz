@@ -5,6 +5,8 @@ export type Props = {
   children: ReactNode;
 };
 
+console.log("hoge");
+
 export const Layout = ( props: Props ): JSX.Element => {
   const { children } = props;
   return (
